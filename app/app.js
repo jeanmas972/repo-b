@@ -16,6 +16,7 @@ mongoose.connection.on('connected', () => {
     console.log('Connected to database ' +config.database);
 });
 
+//On error
 mongoose.connection.on('error', (err) => {
     console.log('Database error: ' +err);
 });
@@ -25,7 +26,7 @@ const app = express();
 const users = require('./routes/users');
 
 // Port Number
-const port = 3240;
+const port = 3242;
 
 // CORS Middleware
 app.use(cors());
@@ -35,6 +36,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Body Parser MiddleWare
 app.use(bodyParser.json());
+
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./config/passport')(passport);
 
 app.use('/users', users);
 
